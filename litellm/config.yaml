@@ -1,0 +1,46 @@
+# LiteLLM proxy configuration
+# Documentazione: https://docs.litellm.ai/docs/proxy/configs
+
+model_list:
+  # --- OpenRouter ---
+  - model_name: openrouter-claude
+    litellm_params:
+      model: openrouter/anthropic/claude-sonnet-4-5
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  - model_name: openrouter-gpt4o
+    litellm_params:
+      model: openrouter/openai/gpt-4o
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  - model_name: openrouter-llama
+    litellm_params:
+      model: openrouter/meta-llama/llama-3.3-70b-instruct
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  # --- Cerebras ---
+  - model_name: cerebras-gpt-oss-120b
+    litellm_params:
+      model: cerebras/gpt-oss-120b
+      api_key: os.environ/CEREBRAS_API_KEY
+
+  - model_name: cerebras-llama-scout
+    litellm_params:
+      model: cerebras/llama-4-scout-17b-16e-instruct
+      api_key: os.environ/CEREBRAS_API_KEY
+
+  # --- OpenAI diretto ---
+  - model_name: gpt-4o
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+
+  # --- Ollama locale (raggiunto via host.docker.internal) ---
+  - model_name: ollama-gemma
+    litellm_params:
+      model: ollama/gemma4:e2b
+      api_base: http://host.docker.internal:11434
+
+general_settings:
+  # Chiave master per autenticare le richieste al proxy
+  master_key: os.environ/LITELLM_MASTER_KEY

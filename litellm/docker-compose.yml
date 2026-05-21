@@ -1,0 +1,23 @@
+services:
+  litellm:
+    # Immagine ufficiale pubblica. Per l'immagine hardened (richiede: docker login dhi.io):
+    # image: dhi.io/litellm:latest
+    image: ghcr.io/berriai/litellm:main-stable
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    env_file:
+      - .env
+    # Passa config e porta come argomenti all'entrypoint DHI
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    restart: unless-stopped
+    # Necessario per raggiungere Ollama (e altri servizi) sull'host
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:4000/health/liveliness || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
